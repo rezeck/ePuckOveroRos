@@ -112,7 +112,7 @@ class ePuck():
 	This class represent an ePuck object
 	"""
 
-	def __init__(self, ttydev="/dev/ttyS0", debug=False):
+	def __init__(self, ttydev="/dev/ttyO0", debug=False):
 		"""
 		Constructor process
 		
