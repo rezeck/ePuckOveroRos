@@ -1,0 +1,3 @@
+<launch>
+  <node name="epuck" pkg="ePuckOveroRos" type="epuck.py" output="screen"/>
+</launch>
