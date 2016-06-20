@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 import rospy
-from epuck.ePuck import ePuck
+import time
+from ePuck import ePuck
 
 class EPuckDriver():
 
-	def __init__(self, ttydev="/dev/ttyO0", epuck_name):
+	def __init__(self, ttydev="/dev/ttyO0", epuck_name="epuck"):
 		self._driver = ePuck(ttydev, False)
 		self._name = epuck_name
 
@@ -16,18 +17,25 @@ class EPuckDriver():
 		self._driver.connect()
 
 		# Setup the necessary sensors.
-		self.setup_sensors()
+		#self.setup_sensors()
 
 		# Disconnect when rospy is going to down
 		rospy.on_shutdown(self.disconnect)
 
 		self.greeting()
 
-		self._driver,step()
+		self._driver.step()
+
+                # Spin almost forever
+                #rate = rospy.Rate(7)   # 7 Hz. If you experience "timeout" problems with multiple robots try to reduce this value.
+                self.startTime = time.time()
+                while not rospy.is_shutdown():
+                    self._driver.step()
 
 
-	def greeting():
+	def greeting(self):
 		rospy.loginfo("Greetings from ePuck 1106")
+                self._driver.set_led(1, 1)
 
 
 	def disconnect(self):

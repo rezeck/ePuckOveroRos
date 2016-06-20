@@ -450,7 +450,7 @@ class ePuck():
 			self._debug('Already connected')
 			return False
 		try:
-			self.serport = serial.Serial(0)#serial.serial_for_url(self.ttydev)
+			self.serport = serial.Serial(self.ttydev)
 			self.serport.baudrate = 230400
 			self.serport.timeout = 0.05
 
