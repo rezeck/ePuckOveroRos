@@ -4,6 +4,9 @@ import rospy
 import time
 import subprocess
 from ePuck import ePuck
+from sensor_msgs.msg import Imu
+
+
 
 
 class EPuckDriver():
@@ -30,11 +33,11 @@ class EPuckDriver():
 
 		# setup publisher
 		self.accel_publisher = rospy.Publisher('accel', Imu)    # Only "linear_acceleration" vector filled.
-		self.selector_publisher = rospy.Publisher('selector', Marker)
-		self.light_publisher = rospy.Publisher('light', Marker)
-		self.motor_speed_publisher = rospy.Publisher('motor_speed', Marker)
-		self.microphone_publisher = rospy.Publisher('microphone', Marker)
-		self.floor_publisher = rospy.Publisher('floor', Marker)
+		#self.selector_publisher = rospy.Publisher('selector', Marker)
+		#self.light_publisher = rospy.Publisher('light', Marker)
+		#self.motor_speed_publisher = rospy.Publisher('motor_speed', Marker)
+		#self.microphone_publisher = rospy.Publisher('microphone', Marker)
+		#self.floor_publisher = rospy.Publisher('floor', Marker)
 
 		# Spin almost forever
 		#rate = rospy.Rate(7)   # 7 Hz. If you experience "timeout" problems with multiple robots try to reduce this value.
@@ -47,23 +50,23 @@ class EPuckDriver():
 	def update_sensors(self):
 		# Accelerometer
 		accel = self._driver.get_accelerometer()
-        # accel_msg = Imu()
-        # accel_msg.header.stamp = rospy.Time.now()
-        # accel_msg.header.frame_id = self._name+"/base_link"
-        # accel_msg.linear_acceleration.x = (accel[1]-2048.0)/800.0*9.81 # 1 g = about 800, then transforms in m/s^2.
-        # accel_msg.linear_acceleration.y = (accel[0]-2048.0)/800.0*9.81
-        # accel_msg.linear_acceleration.z = (accel[2]-2048.0)/800.0*9.81
-        # accel_msg.linear_acceleration_covariance = [0.01,0.0,0.0, 0.0,0.01,0.0, 0.0,0.0,0.01]
-        # #print "accel raw: " + str(accel[0]) + ", " + str(accel[1]) + ", " + str(accel[2])
-        # #print "accel (m/s2): " + str((accel[0]-2048.0)/800.0*9.81) + ", " + str((accel[1]-2048.0)/800.0*9.81) + ", " + str((accel[2]-2048.0)/800.0*9.81)
-        # accel_msg.angular_velocity.x = 0
-        # accel_msg.angular_velocity.y = 0
-        # accel_msg.angular_velocity.z = 0
-        # accel_msg.angular_velocity_covariance = [0.01,0.0,0.0, 0.0,0.01,0.0, 0.0,0.0,0.01]
-        # q = tf.transformations.quaternion_from_euler(0, 0, 0)
-        # accel_msg.orientation = Quaternion(*q)
-        # accel_msg.orientation_covariance = [0.01,0.0,0.0, 0.0,0.01,0.0, 0.0,0.0,0.01]
-        # self.accel_publisher.publish(accel_msg)
+        accel_msg = Imu()
+        accel_msg.header.stamp = rospy.Time.now()
+        accel_msg.header.frame_id = self._name+"/base_link"
+        accel_msg.linear_acceleration.x = (accel[1]-2048.0)/800.0*9.81 # 1 g = about 800, then transforms in m/s^2.
+        accel_msg.linear_acceleration.y = (accel[0]-2048.0)/800.0*9.81
+        accel_msg.linear_acceleration.z = (accel[2]-2048.0)/800.0*9.81
+        accel_msg.linear_acceleration_covariance = [0.01,0.0,0.0, 0.0,0.01,0.0, 0.0,0.0,0.01]
+        #print "accel raw: " + str(accel[0]) + ", " + str(accel[1]) + ", " + str(accel[2])
+        #print "accel (m/s2): " + str((accel[0]-2048.0)/800.0*9.81) + ", " + str((accel[1]-2048.0)/800.0*9.81) + ", " + str((accel[2]-2048.0)/800.0*9.81)
+        accel_msg.angular_velocity.x = 0
+        accel_msg.angular_velocity.y = 0
+        accel_msg.angular_velocity.z = 0
+        accel_msg.angular_velocity_covariance = [0.01,0.0,0.0, 0.0,0.01,0.0, 0.0,0.0,0.01]
+        q = tf.transformations.quaternion_from_euler(0, 0, 0)
+        accel_msg.orientation = Quaternion(*q)
+        accel_msg.orientation_covariance = [0.01,0.0,0.0, 0.0,0.01,0.0, 0.0,0.0,0.01]
+        self.accel_publisher.publish(accel_msg)
 
 	def greeting(self):
 		"""
