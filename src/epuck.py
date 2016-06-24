@@ -3,8 +3,20 @@
 import rospy
 import time
 import subprocess
+import math
+import numpy as np
+import tf
+
 from ePuck import ePuck
+from cv_bridge.core import CvBridge
+from sensor_msgs.msg import Range
 from sensor_msgs.msg import Imu
+from sensor_msgs.msg import Image
+from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Point, Quaternion
+from nav_msgs.msg import Odometry
+from visualization_msgs.msg import Marker
+from std_msgs.msg import Int16
 
 
 
@@ -73,7 +85,7 @@ class EPuckDriver():
 		Hello by robot.
 		"""
 		rospy.loginfo("Greetings from ePuck 1106")
-		player = subprocess.Popen(["mplayer", "r2d2.mp3", "-ss", "30"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		player = subprocess.Popen(["mplayer", "sound.mp3", "-ss", "30"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 		# Set initial velocity to zero
 		self._driver.set_motors_speed(0, 0)
